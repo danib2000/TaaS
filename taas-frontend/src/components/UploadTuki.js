@@ -1,4 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
+import AWS from "aws-sdk";
+
 import "../App.css";
 import "./UploadTuki.css";
 
@@ -20,47 +22,95 @@ const UploadTuki = () => {
     setImage(selectedImage);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(tukiName);
     console.log(tukiType);
     console.log(image);
+
+    // S3 Bucket Name
+    const S3_BUCKET = "taas-cool-bucket";
+
+    // S3 Region
+    const REGION = "us-east-1";
+
+    // S3 Credentials
+    AWS.config.update({
+      accessKeyId: "",
+      secretAccessKey: "",
+    });
+    const s3 = new AWS.S3({
+      params: { Bucket: S3_BUCKET },
+      region: REGION,
+    });
+
+    // Files Parameters
+
+    const params = {
+      Bucket: S3_BUCKET,
+      Key: tukiName + ".png",
+      Body: image,
+    };
+
+    // Uploading file to s3
+
+    var upload = s3
+      .putObject(params)
+      .on("httpUploadProgress", (evt) => {
+        // File uploading progress
+        console.log(
+          "Uploading " + parseInt((evt.loaded * 100) / evt.total) + "%"
+        );
+      })
+      .promise();
+
+    await upload.then((err, data) => {
+      console.log(err);
+      // Fille successfully uploaded
+      alert("File uploaded successfully.");
+    });
+
     // Handle form submission here
   };
 
   return (
-    <div className="input-form-container">
-      {/* <h2>Input Form</h2> */}
-      <form onSubmit={handleSubmit} className="input-form">
-        <div className="input-group">
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={tukiName}
-            onChange={handleNameChange}
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="type">Type:</label>
-          <input
-            type="text"
-            id="type"
-            value={tukiType}
-            onChange={handleTypeChange}
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="image">Image:</label>
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+    <div>
+      <div className="upload-heading">
+        <h2>Upload Tuki</h2>
+        <p>This page is used to upload Tuki to the service.</p>
+      </div>
+      <div className="input-form-container">
+        <form onSubmit={handleSubmit} className="input-form">
+          <div className="input-group">
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              value={tukiName}
+              onChange={handleNameChange}
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="type">Type:</label>
+            <input
+              type="text"
+              id="type"
+              value={tukiType}
+              onChange={handleTypeChange}
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="image">Image:</label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </div>
   );
 };
