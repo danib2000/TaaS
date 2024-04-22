@@ -28,33 +28,6 @@ const UploadTuki = () => {
     // Handle form submission here
   };
 
-  // useEffect(() => {
-  //   if (uploadedFile) {
-  //     console.log(uploadedFile);
-  //   }
-  //   if (tukiName) {
-  //     console.log(tukiName);
-  //   }
-  //   // Do something
-  // }, [uploadedFile, tukiName]);
-
-  // const uploadFile = (e) => {
-  //   console.log(uploadedFile);
-  // };
-
-  // return (
-  //   <div className="App">
-  //     <div>
-  //       <input
-  //         type="file"
-  //         onChange={(e) => setUploadedFile(e.target.files[0])}
-  //       />
-  //       <input type="text" onChange={(e) => setTukiName(e.target.value)} name />
-  //       <button onClick={uploadFile}>Upload</button>
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="input-form-container">
       {/* <h2>Input Form</h2> */}
