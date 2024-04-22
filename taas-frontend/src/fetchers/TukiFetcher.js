@@ -6,7 +6,7 @@ class TukiFetcher extends BaseFetcher {
   static async getTuki() {
     return (await this.httpget(this.routerBaseUrl)).data;
   }
-  static async postProduct(name, type, imageSrc) {
+  static async postTuki(name, type, imageSrc) {
     return this.httpPost(this.routerBaseUrl, {
       name: name,
       type: type,
