@@ -40,3 +40,14 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.slick-prev {
+  left: 3% !important;
+  z-index: 1;
+  color: black
+}
+.slick-next {
+  right: 3% !important;
+  z-index: 1;
+  color: black
+}
