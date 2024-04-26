@@ -29,15 +29,15 @@ const UploadTuki = () => {
     console.log(image);
 
     // S3 Bucket Name
-    const S3_BUCKET = "taas-cool-bucket";
+    const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
 
     // S3 Region
-    const REGION = "us-east-1";
+    const REGION = process.env.REACT_APP_S3_REGION;
 
     // S3 Credentials
     AWS.config.update({
-      accessKeyId: "",
-      secretAccessKey: "",
+      accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY,
+      secretAccessKey: process.env.REACT_APP_S3_PRIVATE_KEY,
     });
     const s3 = new AWS.S3({
       params: { Bucket: S3_BUCKET },
@@ -68,6 +68,8 @@ const UploadTuki = () => {
       console.log(err);
       // Fille successfully uploaded
       alert("File uploaded successfully.");
+
+      // TO DO add POST request to backend to create Tuki in DB
     });
 
     // Handle form submission here
