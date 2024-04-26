@@ -8,7 +8,18 @@ class Navbar extends Component {
   }
 
   render() {
-    return <div> Get Tuki</div>;
+    return (
+      <div>
+        {" "}
+        Get Tuki
+        <img
+          src="https://taas-cool-bucket.s3.amazonaws.com/zxc.png"
+          alt="Girl in a jacket"
+          width="500"
+          height="600"
+        />
+      </div>
+    );
   }
 }
 
