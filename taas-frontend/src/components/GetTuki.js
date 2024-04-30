@@ -51,6 +51,7 @@ const GetTuki = () => {
 
     if (!searchName && !searchType) {
       setSearchErrorDisplay("unset");
+      return;
     }
 
     //setVisibleSearch("none");
