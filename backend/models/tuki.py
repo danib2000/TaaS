@@ -8,6 +8,6 @@ class Tuki(Base):
     __tablename__ = "tuki"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String)
-    type = Column(String)
+    name = Column(String(100))
+    type = Column(String(100))
     image_source = Column(Text)
