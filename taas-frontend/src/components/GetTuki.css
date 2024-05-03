@@ -47,3 +47,20 @@
   .label-form {
     margin: 10px;
   }
+
+  .delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 18px; /* Adjust font size */
+    width: max-content; /* Set width to max-content */
+  }
+  
+  .delete-button:hover {
+    background-color: darkred;
+  }
+  

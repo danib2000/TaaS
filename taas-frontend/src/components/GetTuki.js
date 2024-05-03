@@ -84,6 +84,12 @@ const GetTuki = () => {
     // You can add your search logic here
   };
 
+  const handleDelete = (index) => {
+    // Remove the image at the specified index
+    console.log("asdsad");
+    // You can also make a delete request to the backend to delete the image permanently
+  };
+
   return (
     <div>
       <div className="search-container" style={{ display: visibleSearch }}>
@@ -153,8 +159,14 @@ const GetTuki = () => {
                   }}
                 />
                 <div>
-                  <h2>"tuki"</h2>
-                  <p>"asdsad</p>
+                  <h2>"Tuki"</h2>
+                  <p>"Green parakeet"</p>
+                  <button
+                    onClick={() => handleDelete(index)}
+                    className="delete-button"
+                  >
+                    Delete Tuki
+                  </button>
                 </div>
               </div>
             ))}
