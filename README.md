@@ -12,7 +12,7 @@ The frontend consists of three pages:
 A welcome page and a show case of all our Tukis.
 
 ### Get a nd delete a Tuki
-![image](https://github.com/danib2000/TaaS/assets/19171150/c6afca3c-14ef-49b2-a3e4-bedd97689e84)
+![image](https://github.com/danib2000/TaaS/assets/19171150/b230ef43-da13-4f9b-890b-99e6ca0f9c24)
 
 A place you can search your favorite Tuki and if you wish a place to remove your tuki from the service (which will make us sad, so dont do that).
 
