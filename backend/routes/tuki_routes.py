@@ -93,3 +93,32 @@ def get_tukis_by_type(type: str):
         raise HTTPException(status_code=404, detail=f"Tukis not found for type - {type}")
 
     return {"data": tukis}
+
+
+@router.post("/", status_code=201)
+def create_tuki(name: Annotated[str, Body()], type: Annotated[str, Body()], image_source: Annotated[str, Body()]):
+    """
+    Create a new Tuki in the table with the name, type and image source specified in the request body.
+
+    Args:
+        name (str): The name of the Tuki.
+        type (str): The type of the Tuki.
+        image_source (str): The image source of the Tuki.
+
+    Returns:
+        dict: A dictionary containing the success message with status code 201 created.
+
+    Raises:
+        HTTPException: If there's a database error, a 500 HTTPException is raised with a detail message indicating
+                       "Database error" and the specific error message.
+                       If there's a validation error due to missing or invalid input data, FastAPI will automatically
+                       raise a 422 HTTPException with details about the validation error.
+                       For any other unexpected exceptions, a 500 HTTPException is raised with the exception message.
+    """
+    try:
+        db_handler.add_tuki(name, type, image_source)
+        return {"message": "Tuki created successfully"}
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
