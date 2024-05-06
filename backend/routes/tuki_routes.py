@@ -133,7 +133,7 @@ def delete_tukis_by_name(name: str):
         name (str): The name of the Tuki to delete.
 
     Returns:
-        dict: A dictionary containing the tukis list as value of 'data' key.
+        dict: A dictionary containing a success message.
 
     Raises:
         HTTPException: If no Tukis are found for the specified name and no deletion was made, a 404 HTTPException
@@ -150,5 +150,35 @@ def delete_tukis_by_name(name: str):
 
     if deleted_count == 0:
         raise HTTPException(status_code=404, detail=f"Tukis not found for name - {name}")
+
+    return {"message": f"{deleted_count} Tukis deleted successfully"}
+
+
+@router.delete("/type/{type}")
+def delete_tukis_by_type(type: str):
+    """
+    Delete from the rds Tukis by type.
+
+    Args:
+        type (str): The type of the Tuki to delete.
+
+    Returns:
+        dict: A dictionary containing the success message.
+
+    Raises:
+        HTTPException: If no Tukis are found for the specified type and no deletion was made, a 404 HTTPException
+                       is raised. If there's a database error, a 500 HTTPException is raised.
+                       For any other unexpected exceptions, a 500 HTTPException is raised.
+                       All the exceptions are raised with a detail message.
+    """
+    try:
+        deleted_count = db_handler.delete_tukis_by_name(type)
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    if deleted_count == 0:
+        raise HTTPException(status_code=404, detail=f"Tukis not found for type - {type}")
 
     return {"message": f"{deleted_count} Tukis deleted successfully"}
