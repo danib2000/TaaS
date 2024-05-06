@@ -41,7 +41,7 @@ class DBHandler:
 
         return tukis
 
-    def get_tuki_by_name(self, name):
+    def get_tukis_by_name(self, name):
         """
         Retrieve Tuki records from the database by name.
 
@@ -54,7 +54,7 @@ class DBHandler:
         with self.session() as session:
             return session.query(Tuki).filter(Tuki.name == name).all()
 
-    def get_tuki_by_type(self, type):
+    def get_tukis_by_type(self, type):
         """
         Retrieve Tuki records from the database by type.
 
@@ -67,7 +67,7 @@ class DBHandler:
         with self.session() as session:
             return session.query(Tuki).filter(Tuki.type == type).all()
 
-    def get_tuki_by_name_and_type(self, name, type):
+    def get_tukis_by_name_and_type(self, name, type):
         """
         Retrieve Tuki records from the database by name and type.
 
@@ -81,7 +81,7 @@ class DBHandler:
         with self.session() as session:
             return session.query(Tuki).filter(Tuki.type == type, Tuki.name == name).all()
 
-    def delete_tuki_by_name(self, name):
+    def delete_tukis_by_name(self, name):
         """
         Delete Tuki records from the database by name.
 
@@ -97,7 +97,7 @@ class DBHandler:
 
             return deleted_count
 
-    def delete_tuki_by_type(self, type):
+    def delete_tukis_by_type(self, type):
         """
         Delete Tuki records from the database by type.
 
@@ -113,7 +113,7 @@ class DBHandler:
 
             return deleted_count
 
-    def delete_tuki_by_name_and_type(self, name, type):
+    def delete_tukis_by_name_and_type(self, name, type):
         """
         Delete Tuki records from the database by name and type.
 
@@ -138,20 +138,20 @@ if __name__ == '__main__':
     # db_handler.init_tables()
     # print("tables created successfully")
     y = db_handler.add_tuki("dani", "kon", "img.src")
-    x = db_handler.get_tuki_by_name("dani")
+    x = db_handler.get_tukis_by_name("dani")
     print(y, x)
 
-    x = db_handler.get_tuki_by_type("green cheek")
+    x = db_handler.get_tukis_by_type("green cheek")
     print(x)
 
-    x = db_handler.get_tuki_by_type("kon")
+    x = db_handler.get_tukis_by_type("kon")
     print(x)
 
-    x = db_handler.get_tuki_by_name_and_type("moshon", "green cheek")
+    x = db_handler.get_tukis_by_name_and_type("moshon", "green cheek")
     print(x)
 
-    x = db_handler.delete_tuki_by_name_and_type("yosi","kon")
+    x = db_handler.delete_tukis_by_name_and_type("yosi","kon")
     print(x)
 
-    x = db_handler.get_tuki_by_name_and_type("yosi","kon")
+    x = db_handler.get_tukis_by_name_and_type("yosi","kon")
     print(x)

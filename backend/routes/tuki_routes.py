@@ -11,7 +11,7 @@ db_handler = DBHandler(DB_URL)
 @router.get("/")
 def get_all_tukis():
     """
-    Retrieve all tukis.
+    Retrieve all tukis from rds.
 
     Returns:
         dict: A dictionary containing the tukis list as value of data key.
@@ -38,7 +38,7 @@ def get_all_tukis():
 @router.get("/name/{name}")
 def get_tukis_by_name(name: str):
     """
-    Retrieve Tukis by name.
+    Retrieve from rds Tukis by name.
 
     Args:
         name (str): The name of the tuki to retrieve.
@@ -68,7 +68,7 @@ def get_tukis_by_name(name: str):
 @router.get("/type/{type}")
 def get_tukis_by_type(type: str):
     """
-    Retrieve Tukis by type.
+    Retrieve from rds Tukis by type.
 
     Args:
         type (str): The type of the tukis to retrieve.
@@ -98,7 +98,7 @@ def get_tukis_by_type(type: str):
 @router.post("/", status_code=201)
 def create_tuki(name: Annotated[str, Body()], type: Annotated[str, Body()], image_source: Annotated[str, Body()]):
     """
-    Create a new Tuki in the table with the name, type and image source specified in the request body.
+    Create a new Tuki in the rds table with the name, type and image_source specified in the request body.
 
     Args:
         name (str): The name of the Tuki.
@@ -122,3 +122,33 @@ def create_tuki(name: Annotated[str, Body()], type: Annotated[str, Body()], imag
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/name/{name}")
+def delete_tukis_by_name(name: str):
+    """
+    Delete from the rds Tukis by name.
+
+    Args:
+        name (str): The name of the Tuki to delete.
+
+    Returns:
+        dict: A dictionary containing the tukis list as value of 'data' key.
+
+    Raises:
+        HTTPException: If no Tukis are found for the specified name and no deletion was made, a 404 HTTPException
+                       is raised. If there's a database error, a 500 HTTPException is raised.
+                       For any other unexpected exceptions, a 500 HTTPException is raised.
+                       All the exceptions are raised with a detail message.
+    """
+    try:
+        deleted_count = db_handler.delete_tukis_by_name(name)
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    if deleted_count == 0:
+        raise HTTPException(status_code=404, detail=f"Tukis not found for name - {name}")
+
+    return {"message": f"{deleted_count} Tukis deleted successfully"}
