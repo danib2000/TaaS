@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models.tuki import Base, Tuki
-from consts import DB_URL
 
 
 class DBHandler:
@@ -9,18 +8,34 @@ class DBHandler:
         self.engine = create_engine(db_url)
         self.session = sessionmaker(bind=self.engine)
 
-    def create_tables(self):
+    def init_tables(self):
+        """
+        Initialize the database tables.
+        """
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
 
     def add_tuki(self, name, type, image_source):
+        """
+        Add a new Tuki record to the tuki table.
+
+        Args:
+            name (str): The name of the Tuki.
+            type (str): The type of the Tuki.
+            image_source (str): The image source of the Tuki.
+        """
         with self.session() as session:
             new_tuki = Tuki(name=name, type=type, image_source=image_source)
             session.add(new_tuki)
-
             session.commit()
 
     def get_all_tukis(self):
+        """
+        Retrieve all Tuki records from the tuki table.
+
+        Returns:
+            list: A list of Tuki records.
+        """
         with self.session() as session:
             tukis = session.query(Tuki).all()
 
@@ -29,6 +44,12 @@ class DBHandler:
     def get_tuki_by_name(self, name):
         """
         Retrieve Tuki records from the database by name.
+
+        Args:
+            name (str): The name of the Tuki.
+
+        Returns:
+            list: A list of Tuki records with the specified name.
         """
         with self.session() as session:
             return session.query(Tuki).filter(Tuki.name == name).all()
@@ -36,6 +57,12 @@ class DBHandler:
     def get_tuki_by_type(self, type):
         """
         Retrieve Tuki records from the database by type.
+
+        Args:
+            type (str): The type of the Tuki.
+
+        Returns:
+            list: A list of Tuki records with the specified type.
         """
         with self.session() as session:
             return session.query(Tuki).filter(Tuki.type == type).all()
@@ -43,6 +70,13 @@ class DBHandler:
     def get_tuki_by_name_and_type(self, name, type):
         """
         Retrieve Tuki records from the database by name and type.
+
+        Args:
+            name (str): The name of the Tuki.
+            type (str): The type of the Tuki.
+
+        Returns:
+            list: A list of Tuki records with the specified name and type.
         """
         with self.session() as session:
             return session.query(Tuki).filter(Tuki.type == type, Tuki.name == name).all()
@@ -50,6 +84,12 @@ class DBHandler:
     def delete_tuki_by_name(self, name):
         """
         Delete Tuki records from the database by name.
+
+        Args:
+            name (str): The name of the Tuki.
+
+        Returns:
+            int: The number of Tuki records deleted.
         """
         with self.session() as session:
             deleted_count = session.query(Tuki).filter(Tuki.name == name).delete()
@@ -60,6 +100,12 @@ class DBHandler:
     def delete_tuki_by_type(self, type):
         """
         Delete Tuki records from the database by type.
+
+        Args:
+            type (str): The type of the Tuki.
+
+        Returns:
+            int: The number of Tuki records deleted.
         """
         with self.session() as session:
             deleted_count = session.query(Tuki).filter(Tuki.type == type).delete()
@@ -70,6 +116,13 @@ class DBHandler:
     def delete_tuki_by_name_and_type(self, name, type):
         """
         Delete Tuki records from the database by name and type.
+
+        Args:
+            name (str): The name of the Tuki.
+            type (str): The type of the Tuki.
+
+        Returns:
+            int: The number of Tuki records deleted.
         """
         with self.session() as session:
             deleted_count = session.query(Tuki).filter(Tuki.name == name, Tuki.type == type).delete()
@@ -79,12 +132,14 @@ class DBHandler:
 
 
 if __name__ == '__main__':
+    from consts import DB_URL
+
     db_handler = DBHandler(DB_URL)
-    # db_handler.create_tables()
+    # db_handler.init_tables()
     # print("tables created successfully")
-    db_handler.add_tuki("yosi", "kon", "img.src")
-    x = db_handler.get_tuki_by_name("yosi")
-    print(x)
+    y = db_handler.add_tuki("dani", "kon", "img.src")
+    x = db_handler.get_tuki_by_name("dani")
+    print(y, x)
 
     x = db_handler.get_tuki_by_type("green cheek")
     print(x)
