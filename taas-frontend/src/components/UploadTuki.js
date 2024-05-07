@@ -3,6 +3,8 @@ import AWS from "aws-sdk";
 
 import "../App.css";
 import "./UploadTuki.css";
+import "../fetchers/TukiFetcher";
+import TukiFetcher from "../fetchers/TukiFetcher";
 
 const UploadTuki = () => {
   const [image, setImage] = useState();
@@ -69,6 +71,11 @@ const UploadTuki = () => {
       // Fille successfully uploaded
       alert("File uploaded successfully.");
 
+      TukiFetcher.postTuki(
+        tukiName,
+        tukiType,
+        "https://taas-cool-bucket.s3.amazonaws.com/" + tukiName + ".png"
+      );
       // TO DO add POST request to backend to create Tuki in DB
     });
 

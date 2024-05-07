@@ -15,11 +15,11 @@ class TukiFetcher extends BaseFetcher {
     return await this.httpGet(this.routerBaseUrl + "/type/" + type);
   }
 
-  static async postTuki(name, type, imageSrc) {
+  static async postTuki(name, type, image_source) {
     return this.httpPost(this.routerBaseUrl, {
       name: name,
       type: type,
-      imgageSrc: imageSrc,
+      image_source: image_source,
     });
   }
 }
