@@ -1,5 +1,5 @@
-mysql=0.0.3
-mysql-connector-python=8.4.0
+mysql==0.0.3
+mysql-connector-python==8.4.0
 fastapi==0.111.0
 uvicorn==0.29.0
 sqlalchemy==2.0.29
