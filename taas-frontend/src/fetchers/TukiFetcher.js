@@ -1,7 +1,7 @@
 import BaseFetcher from "./BaseFetcher";
 
 class TukiFetcher extends BaseFetcher {
-  static routerBaseUrl = "/Tukis";
+  static routerBaseUrl = "/tukis";
 
   static async getTukis() {
     return (await this.httpGet(this.routerBaseUrl)).data;

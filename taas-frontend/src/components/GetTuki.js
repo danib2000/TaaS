@@ -70,6 +70,7 @@ const GetTuki = () => {
       tukiFetcher
         .getTukisByType(searchType)
         .then((res) => {
+          console.log(res);
           setTukiImagess(res.data);
         })
         .catch((error) => {
