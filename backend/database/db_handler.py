@@ -132,26 +132,12 @@ class DBHandler:
 
 
 if __name__ == '__main__':
-    from consts import DB_URL
+    from configs import DB_URL
 
     db_handler = DBHandler(DB_URL)
     # db_handler.init_tables()
     # print("tables created successfully")
-    y = db_handler.add_tuki("dani", "kon", "img.src")
-    x = db_handler.get_tukis_by_name("dani")
-    print(y, x)
 
-    x = db_handler.get_tukis_by_type("green cheek")
-    print(x)
 
-    x = db_handler.get_tukis_by_type("kon")
-    print(x)
 
-    x = db_handler.get_tukis_by_name_and_type("moshon", "green cheek")
-    print(x)
 
-    x = db_handler.delete_tukis_by_name_and_type("yosi","kon")
-    print(x)
-
-    x = db_handler.get_tukis_by_name_and_type("yosi","kon")
-    print(x)

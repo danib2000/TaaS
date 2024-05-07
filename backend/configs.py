@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # DB params
 DB_USER_NAME = os.getenv("DB_USER_NAME")

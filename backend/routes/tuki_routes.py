@@ -1,8 +1,9 @@
 from typing_extensions import Annotated
-from fastapi import APIRouter, Body, Depends, HTTPException
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from fastapi import APIRouter, Body, HTTPException
+from sqlalchemy.exc import SQLAlchemyError
 from database.db_handler import DBHandler
-from consts import DB_URL
+from configs import DB_URL
+from logger_file import logger
 
 router = APIRouter()
 db_handler = DBHandler(DB_URL)
@@ -23,6 +24,7 @@ def get_all_tukis():
                        All the exceptions are raised with a detail message.
     """
     try:
+        logger.info("")
         tukis = db_handler.get_all_tukis()
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
@@ -142,10 +144,14 @@ def delete_tukis_by_name(name: str):
                        All the exceptions are raised with a detail message.
     """
     try:
+        logger.info(f"Received request to delete Tukis by name: {name}")
         deleted_count = db_handler.delete_tukis_by_name(name)
+        logger.info(f"{deleted_count} Tukis deleted")
     except SQLAlchemyError as e:
+        logger.error(f"Failed to delete Tukis by name: {name}. Database error: {e}")
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
     except Exception as e:
+        logger.error(f"Failed to delete Tukis by name: {name}. Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
     if deleted_count == 0:
