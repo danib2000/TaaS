@@ -74,7 +74,7 @@ const UploadTuki = () => {
       TukiFetcher.postTuki(
         tukiName,
         tukiType,
-        "https://taas-cool-bucket.s3.amazonaws.com/" + tukiName + ".png"
+        "https://taas-bucket-colman.s3.amazonaws.com/" + tukiName + ".png"
       );
       // TO DO add POST request to backend to create Tuki in DB
     });
