@@ -4,6 +4,7 @@ import "./GetTuki.css";
 import "../App.css";
 import tukiFetcher from "../fetchers/TukiFetcher";
 import Slider from "react-slick"; // Assuming you're using react-slick for the carousel
+import AWS from "aws-sdk";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -75,16 +76,14 @@ const GetTuki = () => {
     }
 
     setVisibleTuki("unset");
-
-    // You can add your search logic here
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = async (index) => {
     // Remove the image at the specified index
     console.log("asdsad");
 
     console.log(tukiImagess[index]);
-
+    await deleteS3Object(tukiImagess[index].name);
     tukiFetcher
       .deleteTuki(tukiImagess[index].id)
       .then((res) => {
@@ -94,6 +93,42 @@ const GetTuki = () => {
         console.error(err);
       });
     // You can also make a delete request to the backend to delete the image permanently
+  };
+
+  const deleteS3Object = async (tukiName) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
+
+        // S3 Region
+        const REGION = process.env.REACT_APP_S3_REGION;
+
+        // S3 Credentials
+        AWS.config.update({
+          accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY,
+          secretAccessKey: process.env.REACT_APP_S3_PRIVATE_KEY,
+        });
+        const s3 = new AWS.S3({
+          params: { Bucket: S3_BUCKET },
+          region: REGION,
+        });
+
+        // Files Parameters
+
+        const params = {
+          Bucket: S3_BUCKET,
+          Key: tukiName + ".png",
+        };
+
+        s3.deleteObject(params, function (err, data) {
+          if (err) reject(err);
+          // an error occurred
+          else resolve(data); // successful response
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
   };
 
   return (
