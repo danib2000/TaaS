@@ -13,19 +13,9 @@ const GetTuki = () => {
   const [searchName, setSearchName] = useState("");
   const [searchBy, setSearchBy] = useState("name"); // Default to searching by name
   const [visibleSearch, setVisibleSearch] = useState("unset");
-  const [tukiImagess, setTukiImagess] = useState("");
+  const [tukiImagess, setTukiImagess] = useState([]);
   const [visibleTuki, setVisibleTuki] = useState("none");
   const [searchErrorDisplay, setSearchErrorDisplay] = useState("none");
-
-  const tukiImages = [
-    "https://taas-cool-bucket.s3.amazonaws.com/tuki1.jpeg",
-    "https://taas-cool-bucket.s3.amazonaws.com/tuki2.jpeg",
-    // "https://taas-cool-bucket.s3.amazonaws.com/tuki3.jpeg",
-    // "https://taas-cool-bucket.s3.amazonaws.com/tuki4.jpeg",
-    // "https://taas-cool-bucket.s3.amazonaws.com/parrot.png",
-  ];
-
-  // To DO add dynamic Tuki carousal with backend request
 
   const settings = {
     dots: true,
@@ -61,7 +51,11 @@ const GetTuki = () => {
       tukiFetcher
         .getTukisByName(searchName)
         .then((res) => {
-          setTukiImagess(res.data);
+          console.log(res.data.data);
+          res.data.data.forEach((tuki) => {
+            console.log(tuki);
+            setTukiImagess((tukiImagess) => [...tukiImagess, tuki]);
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -70,15 +64,15 @@ const GetTuki = () => {
       tukiFetcher
         .getTukisByType(searchType)
         .then((res) => {
-          console.log(res);
-          setTukiImagess(res.data);
+          res.data.data.forEach((tuki) => {
+            console.log(tuki);
+            setTukiImagess((tukiImagess) => [...tukiImagess, tuki]);
+          });
         })
         .catch((error) => {
           console.log(error);
         });
     }
-
-    // request backend
 
     setVisibleTuki("unset");
 
@@ -88,6 +82,17 @@ const GetTuki = () => {
   const handleDelete = (index) => {
     // Remove the image at the specified index
     console.log("asdsad");
+
+    console.log(tukiImagess[index]);
+
+    tukiFetcher
+      .deleteTuki(tukiImagess[index].id)
+      .then((res) => {
+        setVisibleTuki("none");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     // You can also make a delete request to the backend to delete the image permanently
   };
 
@@ -146,11 +151,11 @@ const GetTuki = () => {
         <h1>Your requested Tuki:</h1>
         <div style={{ width: "70%", margin: "auto" }}>
           <Slider {...settings}>
-            {tukiImages.map((image, index) => (
+            {tukiImagess.map((image, index) => (
               <div key={index} style={{ textAlign: "center" }}>
                 <img
-                  src={image}
-                  alt={image}
+                  src={image.image_source}
+                  alt={image.image_source}
                   style={{
                     maxWidth: "100%",
                     maxHeight: "1000px",
@@ -160,8 +165,8 @@ const GetTuki = () => {
                   }}
                 />
                 <div>
-                  <h2>"Tuki"</h2>
-                  <p>"Green parakeet"</p>
+                  <h2>{image.name}</h2>
+                  <p>{image.type}</p>
                   <button
                     onClick={() => handleDelete(index)}
                     className="delete-button"
