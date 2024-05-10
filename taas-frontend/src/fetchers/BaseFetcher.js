@@ -9,6 +9,10 @@ class BaseFetcher {
   static async httpPost(url, body) {
     return await axios.post(this.baseUrl + url, body);
   }
+
+  static async httpDelete(url) {
+    return await axios.delete(this.baseUrl + url);
+  }
 }
 
 export default BaseFetcher;
