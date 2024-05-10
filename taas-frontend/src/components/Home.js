@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Assuming you're using React Router for navigation
 import Slider from "react-slick"; // Assuming you're using react-slick for the carousel
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import tukiFetcher from "../fetchers/TukiFetcher";
 
 const Home = () => {
+  const [tukiImagess, setTukiImagess] = useState([]);
+
   const tukiImages = [
     "https://taas-cool-bucket.s3.amazonaws.com/tuki1.jpeg",
     "https://taas-cool-bucket.s3.amazonaws.com/tuki2.jpeg",
@@ -13,6 +16,25 @@ const Home = () => {
     "https://taas-cool-bucket.s3.amazonaws.com/tuki4.jpeg",
     "https://taas-cool-bucket.s3.amazonaws.com/parrot.png",
   ];
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  const fetchImages = () => {
+    tukiFetcher
+      .getTukis()
+      .then((res) => {
+        res.data.forEach((tuki) => {
+          console.log(tuki);
+          setTukiImagess((tukiImagess) => [...tukiImagess, tuki.image_source]);
+        });
+        console.log(tukiImagess);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // To DO add dynamic Tuki carousal with backend request
 
@@ -67,7 +89,7 @@ const Home = () => {
       <div style={{ marginTop: "50px", margin: "20px" }}>
         <h2>Our Current Tukis</h2>
         <Slider {...settings} style={{ height: "98%", width: "98%" }}>
-          {tukiImages.map((image, index) => (
+          {tukiImagess.map((image, index) => (
             <div key={index} style={{ height: "100%" }}>
               <img
                 src={image}
