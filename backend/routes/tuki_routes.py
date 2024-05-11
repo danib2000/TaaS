@@ -178,7 +178,7 @@ def delete_tukis_by_type(type: str):
                        All the exceptions are raised with a detail message.
     """
     try:
-        deleted_count = db_handler.delete_tukis_by_name(type)
+        deleted_count = db_handler.delete_tukis_by_type(type)
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
     except Exception as e:
@@ -188,3 +188,37 @@ def delete_tukis_by_type(type: str):
         raise HTTPException(status_code=404, detail=f"Tukis not found for type - {type}")
 
     return {"message": f"{deleted_count} Tukis deleted successfully"}
+
+
+@router.delete("/id/{id}")
+def delete_tuki_by_id(id: int):
+    """
+    Delete from the rds Tuki by id.
+
+    Args:
+        id (int): The id of the Tuki to delete.
+
+    Returns:
+        dict: A dictionary containing a success message.
+
+    Raises:
+        HTTPException: If no Tuki is found for the specified id and no deletion was made, a 404 HTTPException
+                       is raised. If there's a database error, a 500 HTTPException is raised.
+                       For any other unexpected exceptions, a 500 HTTPException is raised.
+                       All the exceptions are raised with a detail message.
+    """
+    try:
+        logger.info(f"Received request to delete Tuki by id: {id}")
+        deleted_count = db_handler.delete_tuki_by_id(id)
+        logger.info(f"{deleted_count} Tuki deleted")
+    except SQLAlchemyError as e:
+        logger.error(f"Failed to delete Tukis by id: {id}. Database error: {e}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        logger.error(f"Failed to delete Tukis by id: {id}. Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+    if deleted_count == 0:
+        raise HTTPException(status_code=404, detail=f"Tuki not found for id - {id}")
+
+    return {"message": f"{deleted_count} Tuki deleted successfully"}

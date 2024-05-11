@@ -130,6 +130,22 @@ class DBHandler:
 
             return deleted_count
 
+    def delete_tuki_by_id(self, id):
+        """
+        Delete Tuki from the database by id.
+
+        Args:
+            id (int): The id of the Tuki.
+
+        Returns:
+            int: The number of Tuki records deleted.
+        """
+        with self.session() as session:
+            deleted_count = session.query(Tuki).filter(Tuki.id == id).delete()
+            session.commit()
+
+            return deleted_count
+
 
 if __name__ == '__main__':
     from configs import DB_URL
