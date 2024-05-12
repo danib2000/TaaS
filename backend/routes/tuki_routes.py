@@ -7,6 +7,7 @@ from logger_file import logger
 
 router = APIRouter()
 db_handler = DBHandler(DB_URL)
+db_handler.check_db_connection()
 
 
 @router.get("/")
@@ -24,7 +25,6 @@ def get_all_tukis():
                        All the exceptions are raised with a detail message.
     """
     try:
-        logger.info("")
         tukis = db_handler.get_all_tukis()
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")

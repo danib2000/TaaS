@@ -1,12 +1,32 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
 from models.tuki import Base, Tuki
+from logger_file import logger
 
 
 class DBHandler:
     def __init__(self, db_url):
         self.engine = create_engine(db_url)
         self.session = sessionmaker(bind=self.engine)
+
+    def check_db_connection(self):
+        """
+        Check the connection to the database.
+
+        Returns:
+            bool: True if the connection is successful, False otherwise.
+        """
+        try:
+            with self.engine.connect():
+                logger.info("Database connection successful")
+                return True
+        except SQLAlchemyError as e:
+            logger.error(f"Failed to connect to the database. SQLAlchemyError: {e}")
+            return False
+        except Exception as e:
+            logger.error(f"Failed to connect to the database. Error: {e}")
+            return False
 
     def init_tables(self):
         """
