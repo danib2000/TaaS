@@ -24,7 +24,7 @@ class TukiFetcher extends BaseFetcher {
   }
 
   static async deleteTuki(id) {
-    return this.httpDelete(this.routerBaseUrl + "/id");
+    return this.httpDelete(this.routerBaseUrl + "/id/" + id);
   }
 }
 export default TukiFetcher;
