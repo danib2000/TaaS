@@ -44,6 +44,7 @@ const GetTuki = () => {
       setSearchErrorDisplay("unset");
       return;
     }
+    setTukiImagess([]);
 
     //setVisibleSearch("none");
     if (searchBy === "name") {
@@ -83,7 +84,10 @@ const GetTuki = () => {
     console.log("asdsad");
 
     console.log(tukiImagess[index]);
-    await deleteS3Object(tukiImagess[index].name);
+    await deleteS3Object(
+      tukiImagess[index].name,
+      tukiImagess[index].image_source
+    );
     tukiFetcher
       .deleteTuki(tukiImagess[index].id)
       .then((res) => {
@@ -95,9 +99,11 @@ const GetTuki = () => {
     // You can also make a delete request to the backend to delete the image permanently
   };
 
-  const deleteS3Object = async (tukiName) => {
+  const deleteS3Object = async (tukiName, image_source) => {
     return new Promise((resolve, reject) => {
       try {
+        const s3_name = image_source.split("/");
+
         const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
 
         // S3 Region
@@ -117,7 +123,7 @@ const GetTuki = () => {
 
         const params = {
           Bucket: S3_BUCKET,
-          Key: tukiName + ".png",
+          Key: s3_name[s3_name.length - 1],
         };
 
         s3.deleteObject(params, function (err, data) {
