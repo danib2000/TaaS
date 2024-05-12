@@ -26,9 +26,12 @@ def get_all_tukis():
     """
     try:
         tukis = db_handler.get_all_tukis()
+        logger.info(f"Retrieve all tukis from rds. count - {len(tukis)}")
     except SQLAlchemyError as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        logger.error(f"Failed to retrieve all tukis from rds. SQLAlchemyError: {e}")
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
     except Exception as e:
+        logger.error(f"Failed to retrieve all tukis from rds. Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
     if not tukis:
@@ -56,9 +59,12 @@ def get_tukis_by_name(name: str):
     """
     try:
         tukis = db_handler.get_tukis_by_name(name)
+        logger.info(f"Retrieve tukis by name from rds. count - {len(tukis)}")
     except SQLAlchemyError as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        logger.error(f"Failed to retrieve tukis by name from rds. SQLAlchemyError: {e}")
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
     except Exception as e:
+        logger.error(f"Failed to retrieve tukis by name from rds. Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
     if not tukis:
@@ -86,9 +92,12 @@ def get_tukis_by_type(type: str):
     """
     try:
         tukis = db_handler.get_tukis_by_type(type)
+        logger.info(f"Retrieve tukis by type from rds. count - {len(tukis)}")
     except SQLAlchemyError as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        logger.error(f"Failed to retrieve tukis by type from rds. SQLAlchemyError: {e}")
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
     except Exception as e:
+        logger.error(f"Failed to retrieve tukis by type from rds. Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
     if not tukis:
@@ -119,10 +128,13 @@ def create_tuki(name: Annotated[str, Body()], type: Annotated[str, Body()], imag
     """
     try:
         db_handler.add_tuki(name, type, image_source)
+        logger.info(f"Tuki created successfully.Name: {name}, type: {type}, img_src: {image_source}")
         return {"message": "Tuki created successfully"}
     except SQLAlchemyError as e:
+        logger.error(f"Failed to create new Tuki. SQLAlchemyError: {e}")
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
     except Exception as e:
+        logger.error(f"Failed to create new Tuki. Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
