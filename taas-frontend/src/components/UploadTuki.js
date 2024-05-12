@@ -29,7 +29,7 @@ const UploadTuki = () => {
     console.log(tukiName);
     console.log(tukiType);
     console.log(image);
-
+    const time = Date.now();
     // S3 Bucket Name
     const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
 
@@ -50,7 +50,7 @@ const UploadTuki = () => {
 
     const params = {
       Bucket: S3_BUCKET,
-      Key: tukiName + ".png",
+      Key: time + tukiName + ".png",
       Body: image,
     };
 
@@ -74,7 +74,10 @@ const UploadTuki = () => {
       TukiFetcher.postTuki(
         tukiName,
         tukiType,
-        "https://taas-bucket-colman.s3.amazonaws.com/" + tukiName + ".png"
+        "https://taas-bucket-colman.s3.amazonaws.com/" +
+          time +
+          tukiName +
+          ".png"
       );
       // TO DO add POST request to backend to create Tuki in DB
     });
