@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class BaseFetcher {
-  static baseUrl = "http://localhost:3010";
+  static baseUrl = "";
 
   static async httpGet(url) {
     return await axios.get(this.baseUrl + url);
